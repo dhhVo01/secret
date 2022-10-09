@@ -1,3 +1,5 @@
+import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config();
 import express from "express";
 import ejs from "ejs";
 import bodyParser from "body-parser";
@@ -22,13 +24,13 @@ async function main() {
 
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
+console.log(process.env.SECRET);
 const userSchema = new mongoose.Schema({
   username: String,
   password: String
 });
-const secret = "fuckyou!";
 userSchema.plugin(encrypt, {
-  secret: secret,
+  secret: process.env.SECRET,
   encryptedFields: ['password']
 });
 const User = mongoose.model("User", userSchema, "users");
